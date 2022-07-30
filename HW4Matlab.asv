@@ -43,8 +43,6 @@ fprintf('\nThe zeros of the system D2(s) are at s =\n'); fprintf(' %3.3f\n', zer
 clear all; clc;
 
 
-
-
 %% Problem 3, HW#4
 clear all; clc;
 
@@ -82,8 +80,8 @@ for i = 1:length(n) %for loop to multi s in DEN3 & plot
 end
 
 %% Problem 4bb, HW#4
-%follow same process as previous problems, truncate for efficiency
-close all; clc;
+%follow same process as previous problems, truncate for 
+
 %set up symbolic funcitons, per RR pg9-5
 d = .2; %value of d via Prob3
 % NUM4 = cell(length(n), 1); DEN4 = cell(length(n), 1); %placeholders, for next loop
@@ -96,7 +94,7 @@ d = .2; %value of d via Prob3
         Fn_N = symsum(FnNum, k, 0, n(N)); Fn_D = symsum(FnDen, k, 0, n(N)); %create summation expansions
         Nu = sym2poly(Fn_N); De = sym2poly(Fn_D); %grab coefficients for tf & root locus
         De(end + 1) = 0; %symbolically 'multiply by s' by extension in denominator
-        figure(N); hold on;
+        figure(i); hold on;
         rlocus(tf(Nu, De)); %plotting
         title(['Root Locus plot of G_n(s), with d = .2, where n=', num2str(n(i))], FontSize=10);
     end
