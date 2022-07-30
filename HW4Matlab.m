@@ -42,7 +42,7 @@ fprintf('\nThe zeros of the system D2(s) are at s =\n'); fprintf(' %3.3f\n', zer
 %% Problem 2, HW#4
 clear all; clc;
 
-
+%see PDF
 
 
 %% Problem 3, HW#4
