@@ -39,4 +39,76 @@ poles1 = roots(x1a); zeros1 = roots(y1a); %calculate zeros and poles
 fprintf('The poles of the system D2(s) are at s =\n'); fprintf(' %3.3f\n', poles1(:,1));
 fprintf('\nThe zeros of the system D2(s) are at s =\n'); fprintf(' %3.3f\n', zeros1(:,1));
 
-%% Problem 1c, HW#4
+%% Problem 2, HW#4
+clear all; clc;
+
+
+%% Problem 3, HW#4
+clear all; clc;
+
+%set up symbolic funcitons, per RR pg9-5
+d = .1 %value of d via Prob3
+n = [1 2 4 8] %values of n via Prob3
+syms k s
+NUM3 = cell(length(n), 1); DEN3 = cell(length(n), 1); %placeholders, for prob 4
+    for N = 1:length(n)
+        %catagorize Pade fxns in seperable way for tf & rlocus
+        ck = (factorial((2*n(N))-k)*factorial(n(N)))/(factorial(2*n(N))*factorial(k)*factorial(n(N)-k));
+        FnNum = ((-1)^k)*ck*((d*s)^k); %numeratior as per Pade
+        FnDen = ck*((d*s)^k); %denominator as per Pade
+        %compute & plot variations of n
+        Fn_N = symsum(FnNum, k, 0, n(N)); Fn_D = symsum(FnDen, k, 0, n(N)); %create summation expansions
+        Nu = sym2poly(Fn_N); De = sym2poly(Fn_D); %grab coefficients for tf & root locus
+        NUM3{N} = Nu; DEN3{N} = De; %stored for prob 4
+        figure(N); hold on;
+        rlocus(tf(Nu, De));
+        title(['Root Locus plot of F_n(s), where n=', num2str(n(N))]);
+    end
+
+%% Problem 4a, HW#4
+close all; clc;
+figure(1); hold on;
+rlocus(tf([1], [1 0]));
+title('Root Locus plot of L_1(s) wrt K');
+
+%% Problem 4b, HW#4
+for i = 1:length(n) %for loop to multi s in DEN3 & plot
+    DEN3{i}(1, end+1) = 0; %bump everything left one, essentially mulitplying s through denom
+    figure(i+1); hold on;
+    rlocus(tf(NUM3{i}, DEN3{i})); %plotting based on stored numerators & multi denoms
+    title(['Root Locus plot of G_n(s), where n=', num2str(n(i))]);
+end
+
+%% Problem 4bb, HW#4
+%set up symbolic funcitons, per RR pg9-5
+d = .2; %value of d via Prob3
+% NUM4 = cell(length(n), 1); DEN4 = cell(length(n), 1); %placeholders, for next loop
+    for N = 1:length(n)
+        %catagorize Pade fxns in seperable way for tf & rlocus
+        ck = (factorial((2*n(N))-k)*factorial(n(N)))/(factorial(2*n(N))*factorial(k)*factorial(n(N)-k));
+        FnNum = ((-1)^k)*ck*((d*s)^k); %numeratior as per Pade
+        FnDen = ck*((d*s)^k); %denominator as per Pade
+        %compute & plot variations of n
+        Fn_N = symsum(FnNum, k, 0, n(N)); Fn_D = symsum(FnDen, k, 0, n(N)); %create summation expansions
+        Nu = sym2poly(Fn_N); De = sym2poly(Fn_D); %grab coefficients for tf & root locus
+        De(end + 1) = 0; %symbolically 'multiply by s' by extension in denominator
+        figure(i); hold on;
+        rlocus(tf(Nu, De)); %plotting
+        title(['Root Locus plot of G_n(s), with d = .2, where n=', num2str(n(i))], FontSize=10);
+    end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
